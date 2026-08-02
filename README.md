@@ -40,3 +40,8 @@
 ## v1.1 tag fix
 
 תיקון תגיות מסלול שנשארו באנגלית.
+
+
+## BW v1.2 hard frontend tag fix
+
+Fixed remaining hard-coded English tags in `app.js`.
