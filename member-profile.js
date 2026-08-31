@@ -1,5 +1,6 @@
 const SUPABASE_URL='https://cmtbwohbktirmplieeeq.supabase.co';
 const SUPABASE_KEY='sb_publishable_tk18F8g4AS7oQF9eV9qGQw_nONj_xiX';
+const PROFILE_URL='https://nivhorovitz.github.io/matchapp-business-women/member-profile.html';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
 let currentUser=null,currentMember=null,currentProfile=null;
@@ -35,13 +36,13 @@ async function init(){
   const {data:{session}}=await sb.auth.getSession();
   currentUser=session?.user||null;
   if(!currentUser){$('authPanel').classList.remove('hidden');$('profilePanel').classList.add('hidden');$('signOutBtn').classList.add('hidden');return}
+  if(location.hash.includes('access_token=')){history.replaceState({},document.title,location.pathname+location.search)}
   $('authPanel').classList.add('hidden');$('profilePanel').classList.remove('hidden');$('signOutBtn').classList.remove('hidden');
   try{await loadProfile()}catch(e){console.error(e);$('saveState').textContent='לא הצלחנו לטעון את הפרופיל: '+(e.message||'שגיאה')}
 }
 $('magicLinkForm').addEventListener('submit',async e=>{
   e.preventDefault();const email=$('loginEmail').value.trim();setAuthStatus('שולחת קישור...');
-  const redirectTo=location.origin+location.pathname;
-  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo}});
+  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:PROFILE_URL}});
   setAuthStatus(error?'שגיאה: '+error.message:'שלחנו קישור כניסה למייל. פתחי אותו באותו מכשיר או בכל מכשיר אחר.');
 });
 $('signOutBtn').onclick=async()=>{await sb.auth.signOut();location.reload()};
