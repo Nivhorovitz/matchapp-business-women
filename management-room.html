@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>חדר הניהול | Sparkco</title>
+  <link rel="stylesheet" href="management-room.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="spark">✦</span><div><small>מועדון נשות העסקים · Sparkco</small><strong>חדר הניהול</strong></div></div>
+      <div class="top-actions"><span id="modeChip" class="chip"></span><button id="refreshBtn" class="ghost small">רענון</button></div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div><p class="eyebrow">MONDAY ORCHESTRATION</p><h1>מי צריכה לפגוש את מי השבוע?</h1><p class="lead">כל הבקשות, הצעות החיבור, החריגים והחדרים במקום אחד. המנהלות מאשרות במקום לבנות הכול ידנית.</p></div>
+        <button id="buildBtn" class="primary">יצירת הצעות חיבור</button>
+      </section>
+
+      <section id="metrics" class="metrics"></section>
+
+      <section class="ops-row">
+        <div><small>ROOM POOL</small><strong id="roomCount">0 חדרים</strong><span>חדרי Sparkco זמינים למחזור הנוכחי</span></div>
+        <div class="ops-actions"><input id="roomCsv" type="file" accept=".csv,text/csv" hidden><button id="importRoomsBtn" class="ghost">טעינת CSV חדרים</button></div>
+      </section>
+
+      <section class="board">
+        <div class="column">
+          <div class="column-head"><div><small>READY</small><h2>מוכנות לאישור</h2></div><span id="readyCount">0</span></div>
+          <div id="readyList" class="list"></div>
+        </div>
+        <div class="column attention">
+          <div class="column-head"><div><small>NEEDS ATTENTION</small><h2>דורשות החלטה</h2></div><span id="attentionCount">0</span></div>
+          <div id="attentionList" class="list"></div>
+        </div>
+        <div class="column unmatched">
+          <div class="column-head"><div><small>UNMATCHED</small><h2>טרם שובצו</h2></div><span id="unmatchedCount">0</span></div>
+          <div id="unmatchedList" class="list"></div>
+        </div>
+      </section>
+
+      <section id="authNotice" class="notice hidden"><div><strong>מצב הדגמה</strong><span>כדי לעבוד על נתוני אמת צריך לסמן את גליה ומירב כ־managers. עד אז אפשר לשתול את ה־iFrame ולהדגים את הזרימה המלאה.</span></div></section>
+    </main>
+  </div>
+  <script src="management-room.js"></script>
+</body>
+</html>
