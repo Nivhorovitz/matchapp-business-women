@@ -45,6 +45,17 @@
       <section id="authNotice" class="notice hidden"><div><strong>מצב הדגמה</strong><span>כדי לעבוד על נתוני אמת צריך לסמן את גליה ומירב כ־managers. עד אז אפשר לשתול את ה־iFrame ולהדגים את הזרימה המלאה.</span></div></section>
     </main>
   </div>
+
+  <div id="previewLayer" class="preview-layer hidden" aria-hidden="true">
+    <div class="preview-shell" role="dialog" aria-modal="true" aria-label="תצוגה מקדימה של מפגש">
+      <div class="preview-head">
+        <div><small>INTERACTION PREVIEW</small><strong id="previewTitle">תצוגת המפגש</strong></div>
+        <button id="closePreviewBtn" class="ghost small" type="button">חזרה לחדר הניהול</button>
+      </div>
+      <iframe id="recipeFrame" title="תצוגה מקדימה של מפגש" loading="lazy"></iframe>
+    </div>
+  </div>
+
   <script src="management-room.js"></script>
 </body>
 </html>
