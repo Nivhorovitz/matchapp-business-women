@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weekly Peer Value Cycle | מועדון נשות עסקים</title>
+  <link rel="stylesheet" href="weekly-cycle.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <img src="logo_green.png" alt="" onerror="this.style.display='none'" />
+        <div><small>מועדון נשות עסקים × Sparkco</small><strong>Weekly Peer Value Cycle</strong></div>
+      </div>
+      <div class="top-actions">
+        <span class="pilot-chip">Pilot v0.1 · Weekly ritual</span>
+        <button class="ghost small" id="memberViewBtn">חברות · יום ראשון</button>
+        <button class="ghost small" id="managerViewBtn">מנהלות · יום שני</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="memberView" class="view active">
+        <div class="step member-step">
+          <div class="intro-grid">
+            <div>
+              <p class="eyebrow">הריטואל השבועי של המועדון</p>
+              <h1>מה את צריכה <span>מהמועדון השבוע?</span></h1>
+              <p class="lead">כותבים צורך אמיתי, מתחייבים לאחד משני חלונות המפגש, ו־Sparkco בונה שיחה עם הנשים והדינמיקה שיכולות לייצר את הערך המתאים.</p>
+              <div class="weekly-flow">
+                <div><b>א׳</b><span><strong>בקשה</strong><small>מה יעזור לי השבוע?</small></span></div>
+                <div><b>ב׳</b><span><strong>Orchestration</strong><small>קבוצה + Recipe + חדר</small></span></div>
+                <div><b>ג׳/ה׳</b><span><strong>Spark Session</strong><small>נפגשות בזמן קבוע</small></span></div>
+                <div><b>→</b><span><strong>Value</strong><small>מה באמת נוצר?</small></span></div>
+              </div>
+            </div>
+            <div class="cycle-status-card">
+              <small>המחזור הקרוב</small>
+              <b id="cycleTitle">השבוע</b>
+              <p>הבקשות נאספות עד סוף יום ראשון. ביום שני המנהלות מאשרות את הקבוצות והזימונים.</p>
+              <div class="slot-preview"><span id="slotOneLabel"></span><span id="slotTwoLabel"></span></div>
+            </div>
+          </div>
+
+          <div class="member-form-layout">
+            <form id="requestForm" class="request-card">
+              <div class="section-title"><small>1 · מי את?</small><h2>הבקשה השבועית שלי</h2></div>
+              <div class="two-cols">
+                <label>שם מלא<input id="memberName" required placeholder="שם פרטי ומשפחה" /></label>
+                <label>אימייל לזימון<input id="memberEmail" type="email" required placeholder="name@example.com" /></label>
+              </div>
+
+              <div class="section-divider"></div>
+              <div class="section-title"><small>2 · איזה ערך יעזור עכשיו?</small><h3>בחרי את סוג התוצאה שאת מחפשת</h3></div>
+              <div id="recipeChoices" class="recipe-grid"></div>
+
+              <label id="needLabel">מה בדיוק את רוצה לקדם השבוע?
+                <textarea id="needText" rows="3" required></textarea>
+              </label>
+              <label>במה את יכולה לעזור לחברה אחרת השבוע?
+                <input id="offerText" required placeholder="ניסיון, קשרים, ידע, משוב, תחום מקצועי..." />
+              </label>
+
+              <div class="section-divider"></div>
+              <div class="section-title"><small>3 · מתי את מתחייבת להגיע?</small><h3>סמני כל מועד שבאמת אפשרי עבורך</h3></div>
+              <div class="slot-grid">
+                <label class="slot-card"><input type="checkbox" name="slot" value="tuesday" /><span><b id="tuesdaySlotText"></b><small>20:00 · Spark Session</small></span></label>
+                <label class="slot-card"><input type="checkbox" name="slot" value="thursday" /><span><b id="thursdaySlotText"></b><small>20:00 · Spark Session</small></span></label>
+              </div>
+              <label class="commitment"><input id="commitmentCheck" type="checkbox" required /><span><b>אני מתחייבת להגיע</b><small>אם Sparkco תשבץ אותי באחד המועדים שסימנתי, אשמור אותו ביומן ואגיע למפגש.</small></span></label>
+
+              <div class="form-actions">
+                <button type="button" class="ghost" id="fillDemoRequestBtn">טעינת בקשה לדוגמה</button>
+                <button type="submit" class="primary">שליחת הבקשה השבועית</button>
+              </div>
+              <p class="form-note">בפיילוט הזה הבקשות נשמרות בדפדפן לצורך הדגמה. שכבת ה־shared database מוכנה במודל אך טרם הופעלה.</p>
+            </form>
+
+            <aside class="what-happens-card">
+              <p class="eyebrow">ומה קורה אחרי ששלחתי?</p>
+              <h2>את לא מקבלת “המלצה”. את מקבלת פגישה.</h2>
+              <ol>
+                <li><b>Sparkco קוראת את הצורך</b><span>ובוחרת את ה־Interaction Recipe המתאים.</span></li>
+                <li><b>נבנית קבוצה</b><span>רק מנשים שנתנו commitment לאותו slot.</span></li>
+                <li><b>ביום שני המפגש מאושר</b><span>עם שעה, שמות, חדר וקישור ישיר.</span></li>
+                <li><b>מגיע זימון Calendar</b><span>אותו זימון מגיע לכל המשתתפות בקבוצה.</span></li>
+              </ol>
+              <div class="confirmation-example">
+                <small>דוגמה לאישור</small>
+                <b>✓ Your Spark Session is confirmed</b>
+                <span>שלישי · 20:00 · Feedback Lab</span>
+                <span>נועה · מיה · יעל · דנה</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <div id="requestSuccess" class="overlay-card hidden" role="dialog" aria-modal="true">
+          <div class="success-modal">
+            <div class="success-mark">✓</div>
+            <p class="eyebrow">הבקשה התקבלה</p>
+            <h2>עכשיו Sparkco יכולה לבנות עבורך מפגש.</h2>
+            <p id="requestSuccessText"></p>
+            <button class="primary" id="closeSuccessBtn">סגור</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="managerView" class="view">
+        <div class="manager-head">
+          <div>
+            <p class="eyebrow">Monday Orchestration Board</p>
+            <h1>מה צריך לקרות <span>השבוע?</span></h1>
+            <p class="lead">כל הבקשות, הקבוצות, החדרים והזימונים במקום אחד. המנהלות בודקות חריגים ומאשרות, במקום לבנות את המפגשים ידנית.</p>
+          </div>
+          <div class="manager-actions">
+            <button class="ghost" id="loadDemoBtn">טעינת קהילה לדוגמה</button>
+            <button class="primary" id="buildSessionsBtn">יצירת הקבוצות</button>
+          </div>
+        </div>
+
+        <div id="managerMetrics" class="metrics"></div>
+
+        <div class="ops-strip">
+          <div>
+            <small>חדרי Sparkco</small>
+            <b id="roomCountLabel">0 חדרים נטענו</b>
+            <span>אפשר לטעון CSV שיוצא מ־Sparkco. נחפש עמודות כמו room/name ו־url.</span>
+          </div>
+          <div class="ops-actions">
+            <input id="roomsCsvInput" type="file" accept=".csv,text/csv" hidden />
+            <button class="ghost" id="loadDemoRoomsBtn">חדרי דמו</button>
+            <button class="ghost" id="importRoomsBtn">טעינת CSV חדרים</button>
+          </div>
+        </div>
+
+        <div class="board-grid">
+          <section class="board-column ready-column">
+            <div class="column-head"><div><small>READY TO SCHEDULE</small><h2>מוכנות לזימון</h2></div><span id="readyCount">0</span></div>
+            <div id="readySessions" class="session-list empty-state">עוד לא נוצרו קבוצות.</div>
+          </section>
+          <section class="board-column attention-column">
+            <div class="column-head"><div><small>NEEDS ATTENTION</small><h2>דורשות החלטה</h2></div><span id="attentionCount">0</span></div>
+            <div id="attentionSessions" class="session-list empty-state">אין כרגע חריגים.</div>
+          </section>
+          <section class="board-column unmatched-column">
+            <div class="column-head"><div><small>UNMATCHED</small><h2>טרם שובצו</h2></div><span id="unmatchedCount">0</span></div>
+            <div id="unmatchedRequests" class="session-list empty-state">כל הבקשות שובצו.</div>
+          </section>
+        </div>
+
+        <div class="calendar-note">
+          <div><small>Calendar layer</small><h3>הכפתור “פתיחת זימון מוכן” כבר בונה אירוע עם הזמן, המשתתפות, ה־Recipe והחדר.</h3><p>במצב הדמו הוא פותח Google Calendar כשהכול מלא מראש. כשנחבר OAuth לחשבון המועדון, אותו כפתור יהפוך ל־“שליחת זימון” ויוכל ליצור את האירוע ולשלוח עדכונים לכל המשתתפות אוטומטית.</p></div>
+          <span class="connection-chip">OAuth · טרם חובר</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="weekly-cycle.js"></script>
+</body>
+</html>
