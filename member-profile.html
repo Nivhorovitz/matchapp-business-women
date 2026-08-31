@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>הפרופיל שלי | Peer Value</title>
+  <link rel="stylesheet" href="member-profile.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><img src="logo_green.png" alt="" onerror="this.style.display='none'"><div><small>מועדון נשות עסקים × Sparkco</small><strong>הפרופיל שלי</strong></div></div>
+      <div class="actions"><a class="ghost" href="weekly-cycle.html">הבקשה השבועית</a><button id="signOutBtn" class="ghost hidden">יציאה</button></div>
+    </header>
+
+    <main>
+      <section id="authPanel" class="auth-panel">
+        <div>
+          <p class="eyebrow">זהות אחת לכל החיבורים</p>
+          <h1>הפרופיל שמאפשר ל־Sparkco <span>להכיר אותך לאורך זמן.</span></h1>
+          <p class="lead">המייל שלך משמש רק לזהות ולזימונים. הפרופיל המקצועי עוזר להבין לא רק מה את צריכה השבוע, אלא מי יכולה להיות רלוונטית עבורך ולמי את יכולה ליצור ערך.</p>
+        </div>
+        <form id="magicLinkForm" class="login-card">
+          <h2>כניסה עם קישור למייל</h2>
+          <label>אימייל<input id="loginEmail" type="email" required placeholder="name@example.com"></label>
+          <button class="primary" type="submit">שלחי לי קישור כניסה</button>
+          <p id="authStatus" class="status"></p>
+        </form>
+      </section>
+
+      <section id="profilePanel" class="profile-panel hidden">
+        <div class="profile-head">
+          <div><p class="eyebrow">Matching Profile</p><h1>מי אני <span>בתוך הרשת?</span></h1><p class="lead">אפשר לעדכן את הפרופיל מתי שרוצים. הבקשה השבועית תוסיף עליו את הצורך הנוכחי, במקום להתחיל מאפס בכל שבוע.</p></div>
+          <div class="completion"><small>שלמות הפרופיל</small><b id="completionValue">0%</b><div class="meter"><span id="completionBar"></span></div><p id="completionHint"></p></div>
+        </div>
+
+        <form id="profileForm" class="profile-grid">
+          <section class="card identity-card">
+            <div class="section-title"><small>01 · זהות מקצועית</small><h2>איך להציג אותך?</h2></div>
+            <div class="two"><label>שם מלא<input id="name" required></label><label>תפקיד / כותרת מקצועית<input id="title" placeholder="לדוגמה: יועצת אסטרטגית לעסקים"></label></div>
+            <div class="two"><label>שם העסק<input id="businessName"></label><label>מיקום<input id="location" placeholder="תל אביב / אונליין"></label></div>
+            <label>בכמה משפטים, מה את עושה ולמי?<textarea id="bio" rows="3" placeholder="הקהל, הבעיה שאת פותרת, והזווית הייחודית שלך"></textarea></label>
+            <div class="two"><label>אתר / לינק מקצועי<input id="website" type="url" placeholder="https://..."></label><label>שנות ניסיון<input id="yearsExperience" type="number" min="0" max="60"></label></div>
+          </section>
+
+          <section class="card matching-card">
+            <div class="section-title"><small>02 · מה את מביאה לרשת?</small><h2>יכולת, ניסיון וגישה</h2></div>
+            <label>תחומי מומחיות<textarea id="expertise" rows="2" placeholder="מכירות, מיתוג, פיננסים, AI, גיוס..."></textarea><small>הפרידי בפסיקים</small></label>
+            <label>במה את יכולה לעזור לחברות אחרות?<textarea id="offers" rows="3" placeholder="מה אפשר לקבל ממך בשיחה של 20–30 דקות?"></textarea></label>
+            <label>לאילו קהלים, תפקידים או עולמות יש לך גישה?<textarea id="networkAccess" rows="2" placeholder="מנהלות HR, חברות הייטק, רשויות, עצמאיות, משקיעות..."></textarea></label>
+            <label>באילו ענפים / תחומים את פועלת?<input id="industries" placeholder="חינוך, SaaS, wellbeing..."></label>
+          </section>
+
+          <section class="card goals-card">
+            <div class="section-title"><small>03 · לאן את רוצה להתקדם?</small><h2>הכיוון המתמשך</h2></div>
+            <label>מה המיקוד העסקי שלך בתקופה הזאת?<textarea id="currentFocus" rows="2" placeholder="לדוגמה: להיכנס לשוק הארגוני עם מוצר חדש"></textarea></label>
+            <label>אילו צרכים חוזרים יש לך?<input id="recurringNeeds" placeholder="לקוחות חדשים, תמחור, שותפויות..."></label>
+            <label>איזה אנשים / חיבורים יכולים להיות משמעותיים עבורך?<textarea id="idealConnections" rows="3" placeholder="לא רק תפקידים. תארי מי יכולה לפתוח עבורך אפשרות חדשה."></textarea></label>
+            <label>אילו שיתופי פעולה מעניינים אותך?<input id="collaborationInterests" placeholder="וובינרים, הפניות, מוצר משותף, תוכן..."></label>
+            <label>עם אילו סוגי קהלים את רוצה לעבוד יותר?<input id="audienceTypes" placeholder="מנהלות, יזמיות, ארגונים, B2B..."></label>
+          </section>
+
+          <section class="card contact-card">
+            <div class="section-title"><small>04 · פרטי קשר</small><h2>לזימונים ולתפעול</h2></div>
+            <label>אימייל<input id="email" type="email" disabled></label>
+            <label>טלפון, אופציונלי<input id="phone" type="tel"></label>
+            <div class="privacy-note"><b>המייל אינו חלק מה־matching.</b><span>הוא נשמר לצורך זהות, זימוני Calendar ותפעול המפגשים.</span></div>
+          </section>
+
+          <div class="save-bar"><div><b id="saveState">השינויים נשמרים רק כשתלחצי שמירה.</b><span>אחר כך אפשר לעבור ישר לבקשה השבועית.</span></div><div><button class="ghost" type="button" id="fillDemoBtn">טעינת פרופיל לדוגמה</button><button class="primary" type="submit">שמירת הפרופיל</button></div></div>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="member-profile.js"></script>
+</body>
+</html>
