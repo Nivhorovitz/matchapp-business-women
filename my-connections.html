@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>החיבורים שלי | Sparkco</title>
+  <link rel="stylesheet" href="my-connections.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="spark">✦</span><div><small>מועדון נשות העסקים · Sparkco</small><strong>החיבורים שלי</strong></div></div>
+      <div class="top-actions"><span id="modeChip" class="chip"></span><a class="ghost small" href="member-profile.html" target="_blank" rel="noopener">הפרופיל שלי</a></div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">MY CONNECTIONS</p>
+          <h1 id="helloTitle">הקהילה עובדת בשבילך גם בין המפגשים.</h1>
+          <p class="lead">כאן נמצאים הצורך שלך השבוע, החיבור הבא ומה שכבר נוצר עבורך דרך חברות המועדון.</p>
+        </div>
+        <div class="pulse-card">
+          <small>Peer Value Pulse</small>
+          <strong id="valueCount">0</strong>
+          <span>Value Events שנוצרו עבורך</span>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card weekly-card">
+          <div class="card-head"><div><small>THIS WEEK</small><h2>מה יעזור לי השבוע?</h2></div><span id="requestStatus" class="status">פתוח</span></div>
+          <div id="weeklyContent"></div>
+          <a id="weeklyAction" class="primary full" href="weekly-cycle.html" target="_blank" rel="noopener">שליחת בקשה שבועית</a>
+        </article>
+
+        <article class="card session-card">
+          <div class="card-head"><div><small>NEXT SPARK SESSION</small><h2>החיבור הבא שלי</h2></div><span class="session-dot"></span></div>
+          <div id="sessionContent"></div>
+        </article>
+
+        <article class="card profile-card">
+          <div class="card-head"><div><small>MATCHING CONTEXT</small><h2>מה Sparkco יודעת עליי?</h2></div><span id="profilePct" class="pct">0%</span></div>
+          <div id="profileContent"></div>
+          <a class="ghost full" href="member-profile.html" target="_blank" rel="noopener">עדכון הפרופיל</a>
+        </article>
+
+        <article class="card history-card">
+          <div class="card-head"><div><small>VALUE HISTORY</small><h2>מה כבר נוצר?</h2></div></div>
+          <div id="historyContent"></div>
+        </article>
+      </section>
+
+      <section id="authNotice" class="auth-notice hidden">
+        <div><strong>כדי לראות את המידע האישי שלך</strong><span>השלימי כניסה חד־פעמית ויצירת פרופיל מחוץ ל־Sparko. בינתיים המסך מציג נתוני דמו.</span></div>
+        <a class="primary" href="member-profile.html" target="_blank" rel="noopener">כניסה / יצירת פרופיל</a>
+      </section>
+    </main>
+  </div>
+  <script src="my-connections.js"></script>
+</body>
+</html>
