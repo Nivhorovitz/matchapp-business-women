@@ -11,13 +11,10 @@
     <header class="topbar">
       <div class="brand">
         <img src="logo_green.png" alt="" onerror="this.style.display='none'" />
-        <div>
-          <small>מועדון נשות עסקים × Sparkco</small>
-          <strong>Peer Value Lab</strong>
-        </div>
+        <div><small>מועדון נשות עסקים × Sparkco</small><strong>Peer Value Lab</strong></div>
       </div>
       <div class="top-actions">
-        <span class="pilot-chip">Pilot v0.1 · Demo</span>
+        <span class="pilot-chip">Pilot v0.2 · 4 Value Recipes</span>
         <button class="ghost small" id="memberViewBtn">מסך חברות</button>
         <button class="ghost small" id="adminViewBtn">מסך מנהלות</button>
         <button class="ghost small" id="resetBtn">איפוס דמו</button>
@@ -27,36 +24,35 @@
     <main>
       <section id="memberView" class="view active">
         <div id="stepIntro" class="step active">
-          <div class="hero-grid">
-            <div>
-              <p class="eyebrow">לא נטוורקינג. ערך עסקי בין חברות.</p>
-              <h1>מה יכול לקדם אותך <span>עכשיו?</span></h1>
-              <p class="lead">ספרי לנו מה את צריכה כרגע ומה את יכולה לתת לאחרות. נבנה עבורך חיבור קטן וממוקד סביב צורך עסקי אמיתי.</p>
-              <div class="hero-promise">
-                <div><b>1</b><span>צורך אמיתי</span></div>
-                <div><b>2</b><span>חיבור רלוונטי</span></div>
-                <div><b>3</b><span>שיחה מובנית</span></div>
-                <div><b>4</b><span>תוצאה שנמדדת</span></div>
-              </div>
+          <div class="intro-head">
+            <p class="eyebrow">Sparkco Interaction Engine · Demo</p>
+            <h1>איזה ערך יעזור לך <span>עכשיו?</span></h1>
+            <p class="lead">לא כל צורך דורש אותה שיחה. בחרי את התוצאה שאת מחפשת, ו־Sparkco תתאים את האנשים ואת הדינמיקה.</p>
+          </div>
+
+          <div id="recipeChoices" class="recipe-grid"></div>
+
+          <div class="hero-grid compact-hero">
+            <div class="selected-recipe-panel" id="selectedRecipePanel">
+              <small>ה־Value Recipe שנבחר</small>
+              <div class="selected-recipe-title"><span id="selectedRecipeIcon">◎</span><div><b id="selectedRecipeName">Business Problem Clinic</b><p id="selectedRecipePromise">לפתור בעיה עסקית בעזרת ניסיון של חברות אחרות.</p></div></div>
+              <div class="recipe-flow" id="recipeFlow"></div>
+              <div class="engine-note"><b>מה Sparkco משנה?</b><span id="engineNote"></span></div>
             </div>
+
             <div class="hero-card">
-              <h2>הכניסה שלי למפגש</h2>
-              <label>השם שלי
-                <input id="memberName" placeholder="שם פרטי ומשפחה" />
+              <h2 id="formTitle">ספרי לנו מה את צריכה</h2>
+              <label>השם שלך<input id="memberName" placeholder="שם פרטי ומשפחה" /></label>
+              <label id="needLabel">מה הכי יעזור לך לקדם כרגע?
+                <textarea id="needText" rows="3"></textarea>
               </label>
-              <label>מה הכי יעזור לי לקדם כרגע?
-                <textarea id="needText" rows="3" placeholder="לדוגמה: אני רוצה לדייק את התמחור שלי ולדעת איך להציג אותו בביטחון."></textarea>
-              </label>
-              <div class="tag-block">
-                <span>אפשר לסמן נושא מרכזי</span>
-                <div id="needTags" class="tags"></div>
-              </div>
-              <label>במה אני יכולה לעזור למישהי אחרת?
-                <input id="offerText" placeholder="לדוגמה: מיתוג, שיווק אורגני, מכירות, קשרים, פיננסים..." />
+              <div class="tag-block"><span>נושא מרכזי, אם רלוונטי</span><div id="needTags" class="tags"></div></div>
+              <label id="offerLabel">במה את יכולה לעזור למישהי אחרת?
+                <input id="offerText" />
               </label>
               <div class="button-row">
-                <button class="ghost" id="fillDemoBtn">טעינת דוגמה</button>
-                <button class="primary" id="buildGroupBtn">בנו לי חיבור</button>
+                <button class="ghost" id="fillDemoBtn">טעינת תרחיש לדוגמה</button>
+                <button class="primary" id="buildGroupBtn">Sparkco, בני לי חיבור</button>
               </div>
             </div>
           </div>
@@ -64,48 +60,35 @@
 
         <div id="stepGroup" class="step">
           <div class="section-head">
-            <p class="eyebrow">החיבור שלך להיום</p>
-            <h2>בנינו רביעייה סביב הצורך שלך</h2>
+            <div class="recipe-badge" id="groupRecipeBadge"></div>
+            <p class="eyebrow">ה־orchestration שלך להיום</p>
+            <h2 id="groupTitle">בנינו קבוצה סביב התוצאה שאת מחפשת</h2>
             <p id="groupReason" class="muted"></p>
           </div>
           <div id="groupCards" class="member-grid"></div>
-          <div class="insight-card">
-            <div class="spark-icon">✦</div>
-            <div>
-              <b>למה דווקא הרביעייה הזאת?</b>
-              <p id="orchestrationWhy"></p>
-            </div>
-          </div>
-          <div class="button-row centered">
-            <button class="ghost" id="backToIntroBtn">לשנות צורך</button>
-            <button class="primary" id="startClinicBtn">להתחיל Business Problem Clinic</button>
-          </div>
+          <div class="insight-card"><div class="spark-icon">✦</div><div><b>למה דווקא האנשים והמבנה האלה?</b><p id="orchestrationWhy"></p></div></div>
+          <div class="button-row centered"><button class="ghost" id="backToIntroBtn">לשנות צורך</button><button class="primary" id="startClinicBtn">להתחיל את האינטראקציה</button></div>
         </div>
 
         <div id="stepClinic" class="step">
           <div class="clinic-layout">
             <aside class="clinic-side">
-              <p class="eyebrow">Business Problem Clinic</p>
-              <h2>25 דקות. תוצאה אחת לכל אחת.</h2>
-              <p>המטרה היא לא “להכיר”. המטרה היא שכל אחת תצא עם משהו שימושי שאישה אחרת בקבוצה עזרה ליצור.</p>
+              <div class="recipe-badge" id="clinicRecipeBadge"></div>
+              <p class="eyebrow">Value Interaction Recipe</p>
+              <h2 id="clinicRecipeTitle"></h2>
+              <p id="clinicRecipeDescription"></p>
               <div id="clinicParticipants" class="mini-people"></div>
             </aside>
             <div class="clinic-card">
-              <div class="clinic-top">
-                <span id="clinicStageLabel">שלב 1 מתוך 4</span>
-                <span id="clinicTime">3 דקות</span>
-              </div>
+              <div class="clinic-top"><span id="clinicStageLabel"></span><span id="clinicTime"></span></div>
               <div class="progress"><span id="clinicProgress"></span></div>
               <div class="clinic-content">
-                <div id="clinicIcon" class="clinic-icon">◎</div>
-                <h3 id="clinicTitle">מה אני מנסה לקדם?</h3>
-                <p id="clinicInstruction">כל אחת מקבלת עד 45 שניות: מה הדבר העסקי שהכי יעזור לה להזיז קדימה עכשיו?</p>
+                <div id="clinicIcon" class="clinic-icon"></div>
+                <h3 id="clinicTitle"></h3>
+                <p id="clinicInstruction"></p>
                 <div id="clinicPrompt" class="prompt-box"></div>
               </div>
-              <div class="button-row spaced">
-                <button class="ghost" id="clinicPrevBtn">הקודם</button>
-                <button class="primary" id="clinicNextBtn">השלב הבא</button>
-              </div>
+              <div class="button-row spaced"><button class="ghost" id="clinicPrevBtn">הקודם</button><button class="primary" id="clinicNextBtn">השלב הבא</button></div>
             </div>
           </div>
         </div>
@@ -113,25 +96,17 @@
         <div id="stepOutcome" class="step">
           <div class="outcome-grid">
             <div>
+              <div class="recipe-badge" id="outcomeRecipeBadge"></div>
               <p class="eyebrow">סוגרים את הלולאה</p>
-              <h2>מה קיבלת מהחיבור?</h2>
-              <p class="lead small-lead">20 שניות של סימון מאפשרות למועדון לדעת אם נוצר כאן ערך אמיתי, ולא רק אם הגעת למפגש.</p>
-              <div class="metric-explainer">
-                <span>Interaction</span><b>→</b><span>Value Event</span><b>→</b><span>Follow-up</span>
-              </div>
+              <h2>מה נוצר כאן בפועל?</h2>
+              <p class="lead small-lead" id="outcomeExplanation"></p>
+              <div class="metric-explainer"><span>Need</span><b>→</b><span>Recipe</span><b>→</b><span>Interaction</span><b>→</b><span>Outcome</span></div>
             </div>
             <div class="outcome-card">
-              <label>מי עזרה לך במיוחד?
-                <select id="helpedBy"></select>
-              </label>
-              <div class="tag-block">
-                <span>איזה ערך קיבלת?</span>
-                <div id="valueTypes" class="value-types"></div>
-              </div>
-              <label>במשפט אחד, מה יצא לך מזה?
-                <textarea id="outcomeNote" rows="3" placeholder="לדוגמה: קיבלתי דרך חדשה להציג את המחיר שלי וגם חיבור ללקוחה פוטנציאלית."></textarea>
-              </label>
-              <label class="check-row"><input id="followupCheck" type="checkbox" /> קבענו המשך שיחה / פעולה אחרי המפגש</label>
+              <label>מי יצרה עבורך את הערך המרכזי?<select id="helpedBy"></select></label>
+              <div class="tag-block"><span>איזו תוצאה נוצרה?</span><div id="valueTypes" class="value-types"></div></div>
+              <label>במשפט אחד, מה יצא מזה?<textarea id="outcomeNote" rows="3"></textarea></label>
+              <label class="check-row"><input id="followupCheck" type="checkbox" /> נוצרה פעולה / שיחה / חיבור להמשך</label>
               <button class="primary full" id="saveOutcomeBtn">שמירת Value Event</button>
             </div>
           </div>
@@ -139,70 +114,31 @@
 
         <div id="stepDone" class="step">
           <div class="done-card">
-            <div class="done-mark">✓</div>
-            <p class="eyebrow">Value Event נשמר</p>
-            <h2>זה בדיוק מה שאנחנו רוצים שהמועדון ידע לייצר שוב ושוב.</h2>
+            <div class="done-mark">✓</div><p class="eyebrow">Value Event נשמר</p>
+            <h2>לא רק נפגשנו. אפשר לראות איזה ערך נוצר.</h2>
             <p id="doneSummary" class="lead"></p>
-            <div class="button-row centered">
-              <button class="ghost" id="newRunBtn">להריץ שוב</button>
-              <button class="primary" id="showDashboardBtn">לראות מה המועדון יצר</button>
-            </div>
+            <div class="button-row centered"><button class="ghost" id="newRunBtn">לנסות Recipe אחר</button><button class="primary" id="showDashboardBtn">לראות מה המועדון יצר</button></div>
           </div>
         </div>
       </section>
 
       <section id="adminView" class="view">
         <div class="dashboard-head">
-          <div>
-            <p class="eyebrow">מבט מנהלות · חודש דמו</p>
-            <h1>מה המועדון <span>יצר בין החברות?</span></h1>
-            <p class="lead">לא לייקים, לא זמן מסך ולא “engagement”. ערך שחברה קיבלה מחברה אחרת.</p>
-          </div>
-          <div class="definition-card">
-            <small>North Star Metric</small>
-            <b>Peer Value Coverage</b>
-            <p>אחוז החברות שקיבלו לפחות Value Event אחד מחברה אחרת בתקופה.</p>
-          </div>
+          <div><p class="eyebrow">מבט מנהלות · חודש דמו</p><h1>מה המועדון <span>יצר בין החברות?</span></h1><p class="lead">לא רק engagement. אילו צרכים קיבלו מענה, באמצעות איזו דינמיקה, ומה המשיך הלאה.</p></div>
+          <div class="definition-card"><small>North Star Metric</small><b>Peer Value Coverage</b><p>אחוז החברות שקיבלו לפחות Value Event אחד מחברה אחרת בתקופה.</p></div>
         </div>
-
         <div id="metricCards" class="metrics"></div>
-
         <div class="dashboard-grid">
-          <article class="dash-card wide">
-            <div class="dash-title"><div><small>Value Events</small><h3>איזה ערך נוצר?</h3></div><span>30 ימים</span></div>
-            <div id="valueBars" class="bars"></div>
-          </article>
-          <article class="dash-card">
-            <div class="dash-title"><div><small>Needs</small><h3>מה החברות צריכות עכשיו?</h3></div></div>
-            <div id="needsList" class="signal-list"></div>
-          </article>
-          <article class="dash-card">
-            <div class="dash-title"><div><small>Network Health</small><h3>מי עדיין לא מקבלת מספיק ערך?</h3></div></div>
-            <div id="attentionList" class="attention-list"></div>
-          </article>
-          <article class="dash-card wide">
-            <div class="dash-title"><div><small>Recent proof</small><h3>אירועי ערך אחרונים</h3></div><span id="eventCountChip"></span></div>
-            <div id="eventsTable" class="events-table"></div>
-          </article>
+          <article class="dash-card wide"><div class="dash-title"><div><small>Interaction Recipes</small><h3>איך נוצר הערך?</h3></div><span>30 ימים</span></div><div id="recipeBars" class="recipe-dashboard"></div></article>
+          <article class="dash-card wide"><div class="dash-title"><div><small>Value Events</small><h3>איזו תוצאה נוצרה?</h3></div><span>30 ימים</span></div><div id="valueBars" class="bars"></div></article>
+          <article class="dash-card"><div class="dash-title"><div><small>Needs</small><h3>מה החברות צריכות עכשיו?</h3></div></div><div id="needsList" class="signal-list"></div></article>
+          <article class="dash-card"><div class="dash-title"><div><small>Network Health</small><h3>מי עדיין לא מקבלת מספיק ערך?</h3></div></div><div id="attentionList" class="attention-list"></div></article>
+          <article class="dash-card wide"><div class="dash-title"><div><small>Recent proof</small><h3>אירועי ערך אחרונים</h3></div><span id="eventCountChip"></span></div><div id="eventsTable" class="events-table"></div></article>
         </div>
-
-        <div class="thesis-card">
-          <div>
-            <small>השאלה שהפיילוט בודק</small>
-            <h3>האם המועדון יכול לייצר ערך עסקי משמעותי בין החברות, באופן עקבי ומדיד, בלי שהמובילות יהיו מקור הערך בכל פעם?</h3>
-          </div>
-          <div class="success-box">
-            <small>Success criterion מוצע</small>
-            <b>70%+</b>
-            <span>Peer Value Coverage חודשי</span>
-            <b>30%+</b>
-            <span>חיבורים שממשיכים אחרי המפגש</span>
-          </div>
-        </div>
+        <div class="thesis-card"><div><small>השאלה שהפיילוט בודק</small><h3>האם Sparkco יכולה לבחור את האינטראקציה הנכונה לצורך הנכון, ולייצר באופן עקבי ערך עסקי מדיד בין חברות המועדון?</h3></div><div class="success-box"><small>Success criterion מוצע</small><b>70%+</b><span>Peer Value Coverage</span><b>30%+</b><span>Outcomes שממשיכים הלאה</span></div></div>
       </section>
     </main>
   </div>
-
   <script src="peer-value-lab.js"></script>
 </body>
 </html>
