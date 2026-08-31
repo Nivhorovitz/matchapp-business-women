@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Weekly Peer Value Cycle | מועדון נשות עסקים</title>
   <link rel="stylesheet" href="weekly-cycle.css" />
+  <style>.profile-context{margin:0 0 14px;padding:12px 14px;border:1px solid #dfe6df;border-radius:13px;background:#f7faf7;color:#65736a;font-size:13px}.profile-context a{color:#226b47;font-weight:800}.profile-context b{color:#263c31}.top-actions a{text-decoration:none}</style>
 </head>
 <body>
   <div class="app-shell">
@@ -14,7 +15,8 @@
         <div><small>מועדון נשות עסקים × Sparkco</small><strong>Weekly Peer Value Cycle</strong></div>
       </div>
       <div class="top-actions">
-        <span class="pilot-chip">Pilot v0.1 · Weekly ritual</span>
+        <span class="pilot-chip">Pilot v0.2 · Profile connected</span>
+        <a class="ghost small" id="profileLink" href="member-profile.html">פרופיל אישי</a>
         <button class="ghost small" id="memberViewBtn">חברות · יום ראשון</button>
         <button class="ghost small" id="managerViewBtn">מנהלות · יום שני</button>
       </div>
@@ -27,12 +29,12 @@
             <div>
               <p class="eyebrow">הריטואל השבועי של המועדון</p>
               <h1>מה את צריכה <span>מהמועדון השבוע?</span></h1>
-              <p class="lead">כותבים צורך אמיתי, מתחייבים לאחד משני חלונות המפגש, ו־Sparkco בונה שיחה עם הנשים והדינמיקה שיכולות לייצר את הערך המתאים.</p>
+              <p class="lead">הפרופיל שלך מספר מי את לאורך זמן. כאן מוסיפים רק את מה שחשוב עכשיו, מתחייבים לחלון מפגש, ו־Sparkco בונה את החיבור המתאים.</p>
               <div class="weekly-flow">
+                <div><b>פרופיל</b><span><strong>מי אני ברשת</strong><small>יכולות, ניסיון, קשרים</small></span></div>
                 <div><b>א׳</b><span><strong>בקשה</strong><small>מה יעזור לי השבוע?</small></span></div>
                 <div><b>ב׳</b><span><strong>Orchestration</strong><small>קבוצה + Recipe + חדר</small></span></div>
                 <div><b>ג׳/ה׳</b><span><strong>Spark Session</strong><small>נפגשות בזמן קבוע</small></span></div>
-                <div><b>→</b><span><strong>Value</strong><small>מה באמת נוצר?</small></span></div>
               </div>
             </div>
             <div class="cycle-status-card">
@@ -46,6 +48,7 @@
           <div class="member-form-layout">
             <form id="requestForm" class="request-card">
               <div class="section-title"><small>1 · מי את?</small><h2>הבקשה השבועית שלי</h2></div>
+              <div id="profileContextHint" class="profile-context">טוענת את הפרופיל שלך...</div>
               <div class="two-cols">
                 <label>שם מלא<input id="memberName" required placeholder="שם פרטי ומשפחה" /></label>
                 <label>אימייל לזימון<input id="memberEmail" type="email" required placeholder="name@example.com" /></label>
@@ -59,7 +62,7 @@
                 <textarea id="needText" rows="3" required></textarea>
               </label>
               <label>במה את יכולה לעזור לחברה אחרת השבוע?
-                <input id="offerText" required placeholder="ניסיון, קשרים, ידע, משוב, תחום מקצועי..." />
+                <input id="offerText" required placeholder="הפרופיל שלך יציע כאן נקודת פתיחה, ואפשר לעדכן אותה לשבוע הזה." />
               </label>
 
               <div class="section-divider"></div>
@@ -74,15 +77,15 @@
                 <button type="button" class="ghost" id="fillDemoRequestBtn">טעינת בקשה לדוגמה</button>
                 <button type="submit" class="primary">שליחת הבקשה השבועית</button>
               </div>
-              <p class="form-note">בפיילוט הזה הבקשות נשמרות בדפדפן לצורך הדגמה. שכבת ה־shared database מוכנה במודל אך טרם הופעלה.</p>
+              <p class="form-note">כשאת מחוברת לפרופיל, הבקשה נשמרת ב־Supabase תחת הזהות הקבועה שלך. ללא login הדף נשאר זמין כדמו מקומי.</p>
             </form>
 
             <aside class="what-happens-card">
               <p class="eyebrow">ומה קורה אחרי ששלחתי?</p>
               <h2>את לא מקבלת “המלצה”. את מקבלת פגישה.</h2>
               <ol>
-                <li><b>Sparkco קוראת את הצורך</b><span>ובוחרת את ה־Interaction Recipe המתאים.</span></li>
-                <li><b>נבנית קבוצה</b><span>רק מנשים שנתנו commitment לאותו slot.</span></li>
+                <li><b>Sparkco מחברת פרופיל + צורך</b><span>מי את לאורך זמן ומה חשוב לך דווקא השבוע.</span></li>
+                <li><b>נבנית קבוצה</b><span>רק מנשים שנתנו commitment לאותו slot, עם התאמה מקצועית ורשתית.</span></li>
                 <li><b>ביום שני המפגש מאושר</b><span>עם שעה, שמות, חדר וקישור ישיר.</span></li>
                 <li><b>מגיע זימון Calendar</b><span>אותו זימון מגיע לכל המשתתפות בקבוצה.</span></li>
               </ol>
@@ -114,50 +117,22 @@
             <h1>מה צריך לקרות <span>השבוע?</span></h1>
             <p class="lead">כל הבקשות, הקבוצות, החדרים והזימונים במקום אחד. המנהלות בודקות חריגים ומאשרות, במקום לבנות את המפגשים ידנית.</p>
           </div>
-          <div class="manager-actions">
-            <button class="ghost" id="loadDemoBtn">טעינת קהילה לדוגמה</button>
-            <button class="primary" id="buildSessionsBtn">יצירת הקבוצות</button>
-          </div>
+          <div class="manager-actions"><button class="ghost" id="loadDemoBtn">טעינת קהילה לדוגמה</button><button class="primary" id="buildSessionsBtn">יצירת הקבוצות</button></div>
         </div>
-
         <div id="managerMetrics" class="metrics"></div>
-
-        <div class="ops-strip">
-          <div>
-            <small>חדרי Sparkco</small>
-            <b id="roomCountLabel">0 חדרים נטענו</b>
-            <span>אפשר לטעון CSV שיוצא מ־Sparkco. נחפש עמודות כמו room/name ו־url.</span>
-          </div>
-          <div class="ops-actions">
-            <input id="roomsCsvInput" type="file" accept=".csv,text/csv" hidden />
-            <button class="ghost" id="loadDemoRoomsBtn">חדרי דמו</button>
-            <button class="ghost" id="importRoomsBtn">טעינת CSV חדרים</button>
-          </div>
-        </div>
-
+        <div class="ops-strip"><div><small>חדרי Sparkco</small><b id="roomCountLabel">0 חדרים נטענו</b><span>אפשר לטעון CSV שיוצא מ־Sparkco. נחפש עמודות כמו room/name ו־url.</span></div><div class="ops-actions"><input id="roomsCsvInput" type="file" accept=".csv,text/csv" hidden /><button class="ghost" id="loadDemoRoomsBtn">חדרי דמו</button><button class="ghost" id="importRoomsBtn">טעינת CSV חדרים</button></div></div>
         <div class="board-grid">
-          <section class="board-column ready-column">
-            <div class="column-head"><div><small>READY TO SCHEDULE</small><h2>מוכנות לזימון</h2></div><span id="readyCount">0</span></div>
-            <div id="readySessions" class="session-list empty-state">עוד לא נוצרו קבוצות.</div>
-          </section>
-          <section class="board-column attention-column">
-            <div class="column-head"><div><small>NEEDS ATTENTION</small><h2>דורשות החלטה</h2></div><span id="attentionCount">0</span></div>
-            <div id="attentionSessions" class="session-list empty-state">אין כרגע חריגים.</div>
-          </section>
-          <section class="board-column unmatched-column">
-            <div class="column-head"><div><small>UNMATCHED</small><h2>טרם שובצו</h2></div><span id="unmatchedCount">0</span></div>
-            <div id="unmatchedRequests" class="session-list empty-state">כל הבקשות שובצו.</div>
-          </section>
+          <section class="board-column ready-column"><div class="column-head"><div><small>READY TO SCHEDULE</small><h2>מוכנות לזימון</h2></div><span id="readyCount">0</span></div><div id="readySessions" class="session-list empty-state">עוד לא נוצרו קבוצות.</div></section>
+          <section class="board-column attention-column"><div class="column-head"><div><small>NEEDS ATTENTION</small><h2>דורשות החלטה</h2></div><span id="attentionCount">0</span></div><div id="attentionSessions" class="session-list empty-state">אין כרגע חריגים.</div></section>
+          <section class="board-column unmatched-column"><div class="column-head"><div><small>UNMATCHED</small><h2>טרם שובצו</h2></div><span id="unmatchedCount">0</span></div><div id="unmatchedRequests" class="session-list empty-state">כל הבקשות שובצו.</div></section>
         </div>
-
-        <div class="calendar-note">
-          <div><small>Calendar layer</small><h3>הכפתור “פתיחת זימון מוכן” כבר בונה אירוע עם הזמן, המשתתפות, ה־Recipe והחדר.</h3><p>במצב הדמו הוא פותח Google Calendar כשהכול מלא מראש. כשנחבר OAuth לחשבון המועדון, אותו כפתור יהפוך ל־“שליחת זימון” ויוכל ליצור את האירוע ולשלוח עדכונים לכל המשתתפות אוטומטית.</p></div>
-          <span class="connection-chip">OAuth · טרם חובר</span>
-        </div>
+        <div class="calendar-note"><div><small>Calendar layer</small><h3>הכפתור “פתיחת זימון מוכן” כבר בונה אירוע עם הזמן, המשתתפות, ה־Recipe והחדר.</h3><p>כשנחבר OAuth לחשבון המועדון, אותו כפתור יהפוך ל־“שליחת זימון” ויוכל ליצור את האירוע ולשלוח עדכונים לכל המשתתפות אוטומטית.</p></div><span class="connection-chip">OAuth · טרם חובר</span></div>
       </section>
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="weekly-cycle.js"></script>
+  <script src="weekly-cycle-profile.js"></script>
 </body>
 </html>
