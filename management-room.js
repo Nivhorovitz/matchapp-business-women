@@ -25,7 +25,23 @@ function render(){
 }
 function sessionCard(s){return`<article class="session"><div class="session-top"><span class="recipe">${esc(recipeNames[s.recipe]||s.recipe)}</span><span class="slot">${s.slot==='tuesday'?'שלישי · 20:00':'חמישי · 20:00'}</span></div><div class="people">${(s.members||[]).map(p=>`<span class="person">${esc(p.name||'חברה')}</span>`).join('')}</div><div class="reason"><b>למה החיבור הזה?</b><br>${esc(s.reason||'התאמה לפי הצורך השבועי והפרופילים המקצועיים.')}</div><div class="card-actions"><button class="approve" onclick="approveDemo(this)">אישור</button><button class="preview" onclick="previewRecipe('${esc(s.recipe)}')">Preview</button></div></article>`}
 window.approveDemo=btn=>{btn.textContent='מאושר ✓';btn.disabled=true};
-window.previewRecipe=recipe=>window.open(`peer-value-lab.html?embed=true&recipe=${encodeURIComponent(recipe)}`,'_blank');
+function closePreview(){
+ $('previewLayer').classList.add('hidden');
+ $('previewLayer').setAttribute('aria-hidden','true');
+ $('recipeFrame').src='about:blank';
+ document.body.classList.remove('preview-open');
+}
+window.previewRecipe=recipe=>{
+ const title=recipeNames[recipe]||'תצוגת המפגש';
+ $('previewTitle').textContent=title;
+ $('recipeFrame').src=`peer-value-lab.html?embed=true&recipe=${encodeURIComponent(recipe)}`;
+ $('previewLayer').classList.remove('hidden');
+ $('previewLayer').setAttribute('aria-hidden','false');
+ document.body.classList.add('preview-open');
+};
+$('closePreviewBtn').onclick=closePreview;
+$('previewLayer').addEventListener('click',e=>{if(e.target===$('previewLayer'))closePreview()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('previewLayer').classList.contains('hidden'))closePreview()});
 async function loadLive(){
  const {data:{session}}=await sb.auth.getSession();if(!session)return false;
  const {data:mgr}=await sb.from('pv_managers').select('id,community_key').eq('auth_user_id',session.user.id).maybeSingle();if(!mgr)return false;
