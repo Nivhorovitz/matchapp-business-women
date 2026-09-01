@@ -4,11 +4,13 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const embedded=window.self!==window.top||params.get('embed')==='1';
+const syncChannel='BroadcastChannel' in window?new BroadcastChannel('sparkco-member-sync'):null;
+let refreshBusy=false;
 if(embedded)document.body.classList.add('embed');
 const recipeNames={problem:'Business Problem Clinic',referral:'Referral Exchange',feedback:'Feedback Lab',collaboration:'Collaboration Builder'};
 const demo={member:{name:'נועה לוי'},profile:{title:'יועצת שיווק וצמיחה',bio:'עוזרת לעסקים מבוססי מומחיות לחדד הצעה ולבנות מנוע צמיחה.',expertise:['שיווק אורגני','בניית קהילה','הצעת ערך'],offers:['משוב על מסרים','חיבור לקהילות'],current_focus:'להיכנס יותר לעבודה עם חברות וארגונים',profile_completeness:82},request:{recipe:'feedback',need_text:'אני רוצה משוב על חבילת ליווי חדשה לפני שאני יוצאת איתה לשוק.',offer_text:'שיווק אורגני, תוכן ובניית קהילה',slots:['tuesday','thursday'],status:'submitted'},session:{recipe:'feedback',starts_at:new Date(Date.now()+86400000*2).toISOString(),duration_minutes:20,status:'confirmed',room_url:'#'},values:[{value_type:'feedback',note:'קיבלתי דיוק משמעותי במסר ובתמחור'},{value_type:'referral',note:'נוצר חיבור ללקוחה פוטנציאלית'},{value_type:'followup',note:'נקבעה שיחת המשך עם חברה מהקבוצה'}]};
 function fmtDate(iso){try{return new Intl.DateTimeFormat('he-IL',{weekday:'long',day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(iso))}catch{return''}}
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;'}[m]))}
 function render(data,isDemo=false){
   const m=data.member||{},p=data.profile||{},r=data.request||null,s=data.session||null,vals=data.values||[];
   $('modeChip').textContent=isDemo?'מצב הדגמה':'מחובר';
@@ -60,7 +62,17 @@ async function loadReal(){
   }
   return{member,profile,request,session:nextSession,values};
 }
+async function refreshReal(){
+  if(params.get('demo')==='1'||refreshBusy)return;
+  refreshBusy=true;
+  try{const real=await loadReal();real?render(real,false):renderLoggedOut()}catch(e){console.error(e);renderLoggedOut()}finally{refreshBusy=false}
+}
+if(syncChannel)syncChannel.onmessage=e=>{if(e?.data?.type==='profile-updated')refreshReal()};
+window.addEventListener('storage',e=>{if(e.key==='sparkco-member-sync')refreshReal()});
+window.addEventListener('focus',refreshReal);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshReal()});
+setInterval(()=>{if(!document.hidden)refreshReal()},20000);
 (async()=>{
   if(params.get('demo')==='1'){render(demo,true);return}
-  try{const real=await loadReal();real?render(real,false):renderLoggedOut()}catch(e){console.error(e);renderLoggedOut()}
+  await refreshReal();
 })();
