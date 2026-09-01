@@ -2,7 +2,8 @@ const SUPABASE_URL='https://cmtbwohbktirmplieeeq.supabase.co';
 const SUPABASE_KEY='sb_publishable_tk18F8g4AS7oQF9eV9qGQw_nONj_xiX';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
-const embedded=window.self!==window.top||new URLSearchParams(location.search).get('embed')==='1';
+const params=new URLSearchParams(location.search);
+const embedded=window.self!==window.top||params.get('embed')==='1';
 if(embedded)document.body.classList.add('embed');
 const recipeNames={problem:'Business Problem Clinic',referral:'Referral Exchange',feedback:'Feedback Lab',collaboration:'Collaboration Builder'};
 const demo={member:{name:'נועה לוי'},profile:{title:'יועצת שיווק וצמיחה',bio:'עוזרת לעסקים מבוססי מומחיות לחדד הצעה ולבנות מנוע צמיחה.',expertise:['שיווק אורגני','בניית קהילה','הצעת ערך'],offers:['משוב על מסרים','חיבור לקהילות'],current_focus:'להיכנס יותר לעבודה עם חברות וארגונים',profile_completeness:82},request:{recipe:'feedback',need_text:'אני רוצה משוב על חבילת ליווי חדשה לפני שאני יוצאת איתה לשוק.',offer_text:'שיווק אורגני, תוכן ובניית קהילה',slots:['tuesday','thursday'],status:'submitted'},session:{recipe:'feedback',starts_at:new Date(Date.now()+86400000*2).toISOString(),duration_minutes:20,status:'confirmed',room_url:'#'},values:[{value_type:'feedback',note:'קיבלתי דיוק משמעותי במסר ובתמחור'},{value_type:'referral',note:'נוצר חיבור ללקוחה פוטנציאלית'},{value_type:'followup',note:'נקבעה שיחת המשך עם חברה מהקבוצה'}]};
@@ -19,6 +20,18 @@ function render(data,isDemo=false){
   if(s){$('sessionContent').innerHTML=`<div class="session-main"><div class="recipe">${esc(recipeNames[s.recipe]||s.recipe)}</div><div class="time">${esc(fmtDate(s.starts_at))}</div><p>${s.duration_minutes||20} דקות · Spark Session</p>${s.reason?`<div class="request-box"><b>למה החיבור הזה?</b><p>${esc(s.reason)}</p></div>`:''}</div>${s.room_url&&s.room_url!=='#'?`<a class="primary full" href="${esc(s.room_url)}" target="_top">כניסה לחדר</a>`:''}`}else{$('sessionContent').innerHTML='<div class="empty">אין כרגע Spark Session מאושר. ברגע שהקבוצה תיבנה, כל הפרטים יופיעו כאן.</div>'}
   $('historyContent').innerHTML=vals.length?`<div class="history-list">${vals.slice(0,5).map(v=>`<div class="history-item"><div class="history-icon">✓</div><div><b>${esc(labelValue(v.value_type))}</b><span>${esc(v.note||'נוצר ערך במפגש')}</span></div></div>`).join('')}</div>`:'<div class="empty">אחרי Spark Sessions, ההפניות, המשובים, שיתופי הפעולה וה־follow-ups שלך ייאספו כאן.</div>';
   $('authNotice').classList.toggle('hidden',!isDemo);
+}
+function renderLoggedOut(){
+  $('modeChip').textContent='נדרשת כניסה';
+  $('helloTitle').textContent='החיבורים האישיים שלך יופיעו כאן.';
+  $('valueCount').textContent='—';
+  $('profilePct').textContent='—';
+  $('requestStatus').textContent='';
+  $('weeklyContent').innerHTML='<div class="empty">אחרי הכניסה יוצגו כאן הצורך או הבקשה השבועית שלך.</div>';
+  $('sessionContent').innerHTML='<div class="empty">אחרי הכניסה יוצג כאן החיבור הבא שנקבע עבורך.</div>';
+  $('profileContent').innerHTML='<div class="empty">כאן יוצג ההקשר האישי שמשמש לבניית התאמות עבורך.</div>';
+  $('historyContent').innerHTML='<div class="empty">כאן תישמר היסטוריית הערך והחיבורים שנוצרו עבורך.</div>';
+  $('authNotice').classList.remove('hidden');
 }
 function labelValue(t){return({feedback:'משוב שימושי',referral:'הפניה / חיבור',followup:'שיחת המשך',collaboration:'שיתוף פעולה',advice:'עצה פרקטית'}[t]||'Value Event')}
 async function loadReal(){
@@ -47,4 +60,7 @@ async function loadReal(){
   }
   return{member,profile,request,session:nextSession,values};
 }
-(async()=>{try{const real=await loadReal();render(real||demo,!real)}catch(e){console.error(e);render(demo,true)}})();
+(async()=>{
+  if(params.get('demo')==='1'){render(demo,true);return}
+  try{const real=await loadReal();real?render(real,false):renderLoggedOut()}catch(e){console.error(e);renderLoggedOut()}
+})();
