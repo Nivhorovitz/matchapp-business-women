@@ -3,6 +3,7 @@ const SUPABASE_KEY='sb_publishable_tk18F8g4AS7oQF9eV9qGQw_nONj_xiX';
 const PROFILE_URL=new URL('member-profile.html',location.href).href.split('#')[0];
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
+const syncChannel='BroadcastChannel' in window?new BroadcastChannel('sparkco-member-sync'):null;
 let currentUser=null,currentMember=null,currentProfile=null,initBusy=false;
 const split=s=>String(s||'').split(/,|\n/).map(x=>x.trim()).filter(Boolean);
 const join=a=>Array.isArray(a)?a.join(', '):'';
@@ -10,6 +11,11 @@ function setAuthStatus(t){$('authStatus').textContent=t||''}
 function emailLocalPart(email){return String(email||'').split('@')[0]}
 function metadataName(user){return (user?.user_metadata?.full_name||user?.user_metadata?.name||'').trim()}
 function isProvisionalName(name,email){const n=String(name||'').trim().toLowerCase();const local=emailLocalPart(email).trim().toLowerCase();return !!n&&n===local}
+function announceProfileUpdate(){
+  const payload={type:'profile-updated',memberId:currentMember?.id||null,at:Date.now()};
+  try{syncChannel?.postMessage(payload)}catch(e){}
+  try{localStorage.setItem('sparkco-member-sync',JSON.stringify(payload))}catch(e){}
+}
 function completeness(v){
   const checks=[v.name,v.title,v.bio,v.expertise?.length,v.offers?.length,v.network_access?.length,v.current_focus,v.ideal_connections,v.collaboration_interests?.length,v.industries?.length];
   return Math.round(checks.filter(Boolean).length/checks.length*100);
@@ -71,7 +77,7 @@ $('profileForm').addEventListener('submit',async e=>{
   const profilePayload={member_id:currentMember.id,title:v.title,business_name:v.business_name,bio:v.bio,website:v.website,location:v.location,industries:v.industries,expertise:v.expertise,offers:v.offers,recurring_needs:v.recurring_needs,current_focus:v.current_focus,ideal_connections:v.ideal_connections,collaboration_interests:v.collaboration_interests,network_access:v.network_access,audience_types:v.audience_types,years_experience:v.years_experience,profile_completeness:completeness(v),updated_at:new Date().toISOString()};
   const {data:p,error:pe}=await sb.from('pv_member_profiles').upsert(profilePayload,{onConflict:'member_id'}).select('*').single();
   if(pe){$('saveState').textContent='שגיאת שמירה';alert(pe.message);return}
-  currentMember=m;currentProfile=p;hydrate();$('saveState').textContent='הפרופיל נשמר ✓';
+  currentMember=m;currentProfile=p;hydrate();$('saveState').textContent='הפרופיל נשמר ✓';announceProfileUpdate();
 });
 $('fillDemoBtn').onclick=()=>{
   $('name').value='נועה לוי';$('title').value='יועצת שיווק וצמיחה לעסקים';$('businessName').value='Noya Growth';$('bio').value='עוזרת לעסקים מבוססי מומחיות לחדד הצעה, לבנות מנוע תוכן ולהפוך קהל ללקוחות.';$('location').value='תל אביב / אונליין';$('website').value='https://example.com';$('yearsExperience').value='9';$('industries').value='ייעוץ, קהילות, שירותים מקצועיים';$('expertise').value='שיווק אורגני, תוכן, בניית קהילה, הצעת ערך';$('offers').value='משוב על מסרים, חשיבה על שיווק אורגני, חיבור לקהילות עצמאיות';$('networkAccess').value='עצמאיות, מנהלות קהילה, ארגוני חינוך';$('currentFocus').value='להיכנס יותר לעבודה עם חברות וארגונים';$('recurringNeeds').value='לקוחות ארגוניים, תמחור, שותפויות';$('idealConnections').value='מנהלות HR, מובילות L&D, נשים שכבר מוכרות שירותים לארגונים';$('collaborationInterests').value='וובינרים משותפים, הפניות, תוכן משותף';$('audienceTypes').value='מנהלות, צוותי HR, עצמאיות';updateCompletion(collect());
