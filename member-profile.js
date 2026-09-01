@@ -1,6 +1,6 @@
 const SUPABASE_URL='https://cmtbwohbktirmplieeeq.supabase.co';
 const SUPABASE_KEY='sb_publishable_tk18F8g4AS7oQF9eV9qGQw_nONj_xiX';
-const PROFILE_URL='https://nivhorovitz.github.io/matchapp-business-women/member-profile.html';
+const PROFILE_URL=new URL('member-profile.html',location.href).href.split('#')[0];
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
 let currentUser=null,currentMember=null,currentProfile=null;
