@@ -3,10 +3,13 @@ const SUPABASE_KEY='sb_publishable_tk18F8g4AS7oQF9eV9qGQw_nONj_xiX';
 const PROFILE_URL=new URL('member-profile.html',location.href).href.split('#')[0];
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
-let currentUser=null,currentMember=null,currentProfile=null;
+let currentUser=null,currentMember=null,currentProfile=null,initBusy=false;
 const split=s=>String(s||'').split(/,|\n/).map(x=>x.trim()).filter(Boolean);
 const join=a=>Array.isArray(a)?a.join(', '):'';
 function setAuthStatus(t){$('authStatus').textContent=t||''}
+function emailLocalPart(email){return String(email||'').split('@')[0]}
+function metadataName(user){return (user?.user_metadata?.full_name||user?.user_metadata?.name||'').trim()}
+function isProvisionalName(name,email){const n=String(name||'').trim().toLowerCase();const local=emailLocalPart(email).trim().toLowerCase();return !!n&&n===local}
 function completeness(v){
   const checks=[v.name,v.title,v.bio,v.expertise?.length,v.offers?.length,v.network_access?.length,v.current_focus,v.ideal_connections,v.collaboration_interests?.length,v.industries?.length];
   return Math.round(checks.filter(Boolean).length/checks.length*100);
@@ -20,25 +23,37 @@ function collect(){
 }
 function hydrate(){
   const m=currentMember||{},p=currentProfile||{};
-  $('name').value=m.name||'';$('email').value=m.email||currentUser?.email||'';$('phone').value=m.phone||'';$('title').value=p.title||'';$('businessName').value=p.business_name||'';$('bio').value=p.bio||'';$('website').value=p.website||'';$('location').value=p.location||'';$('industries').value=join(p.industries);$('expertise').value=join(p.expertise);$('offers').value=join(p.offers);$('recurringNeeds').value=join(p.recurring_needs);$('currentFocus').value=p.current_focus||'';$('idealConnections').value=p.ideal_connections||'';$('collaborationInterests').value=join(p.collaboration_interests);$('networkAccess').value=join(p.network_access);$('audienceTypes').value=join(p.audience_types);$('yearsExperience').value=p.years_experience??'';updateCompletion({...m,...p});
+  const displayName=isProvisionalName(m.name,m.email)?'':(m.name||'');
+  $('name').value=displayName;$('name').placeholder='איך תרצי שנקרא לך?';$('email').value=m.email||currentUser?.email||'';$('phone').value=m.phone||'';$('title').value=p.title||'';$('businessName').value=p.business_name||'';$('bio').value=p.bio||'';$('website').value=p.website||'';$('location').value=p.location||'';$('industries').value=join(p.industries);$('expertise').value=join(p.expertise);$('offers').value=join(p.offers);$('recurringNeeds').value=join(p.recurring_needs);$('currentFocus').value=p.current_focus||'';$('idealConnections').value=p.ideal_connections||'';$('collaborationInterests').value=join(p.collaboration_interests);$('networkAccess').value=join(p.network_access);$('audienceTypes').value=join(p.audience_types);$('yearsExperience').value=p.years_experience??'';updateCompletion({...m,...p,name:displayName});
 }
 async function loadProfile(){
   const {data:m,error:me}=await sb.from('pv_members').select('*').eq('auth_user_id',currentUser.id).maybeSingle();
   if(me) throw me;
   if(!m){
-    const {data:newM,error}=await sb.from('pv_members').insert({community_key:'business_women',name:currentUser.user_metadata?.name||currentUser.email.split('@')[0],email:currentUser.email,auth_user_id:currentUser.id}).select('*').single();
-    if(error) throw error;currentMember=newM;
+    const provisionalName=metadataName(currentUser)||emailLocalPart(currentUser.email);
+    const {data:newM,error}=await sb.from('pv_members').insert({community_key:'business_women',name:provisionalName,email:currentUser.email,auth_user_id:currentUser.id}).select('*').single();
+    if(error){
+      if(error.code==='23505'){
+        const {data:existing,error:retryError}=await sb.from('pv_members').select('*').eq('auth_user_id',currentUser.id).maybeSingle();
+        if(retryError)throw retryError;
+        if(existing)currentMember=existing;else throw error;
+      }else throw error;
+    }else currentMember=newM;
   }else currentMember=m;
   const {data:p,error:pe}=await sb.from('pv_member_profiles').select('*').eq('member_id',currentMember.id).maybeSingle();
   if(pe) throw pe;currentProfile=p||null;hydrate();
 }
 async function init(){
-  const {data:{session}}=await sb.auth.getSession();
-  currentUser=session?.user||null;
-  if(!currentUser){$('authPanel').classList.remove('hidden');$('profilePanel').classList.add('hidden');$('signOutBtn').classList.add('hidden');return}
-  if(location.hash.includes('access_token=')){history.replaceState({},document.title,location.pathname+location.search)}
-  $('authPanel').classList.add('hidden');$('profilePanel').classList.remove('hidden');$('signOutBtn').classList.remove('hidden');
-  try{await loadProfile()}catch(e){console.error(e);$('saveState').textContent='לא הצלחנו לטעון את הפרופיל: '+(e.message||'שגיאה')}
+  if(initBusy)return;
+  initBusy=true;
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    currentUser=session?.user||null;
+    if(!currentUser){$('authPanel').classList.remove('hidden');$('profilePanel').classList.add('hidden');$('signOutBtn').classList.add('hidden');return}
+    if(location.hash.includes('access_token=')){history.replaceState({},document.title,location.pathname+location.search)}
+    $('authPanel').classList.add('hidden');$('profilePanel').classList.remove('hidden');$('signOutBtn').classList.remove('hidden');
+    try{await loadProfile();$('saveState').textContent='השינויים נשמרים רק כשתלחצי שמירה.'}catch(e){console.error(e);$('saveState').textContent='לא הצלחנו לטעון את הפרופיל: '+(e.message||'שגיאה')}
+  }finally{initBusy=false}
 }
 $('magicLinkForm').addEventListener('submit',async e=>{
   e.preventDefault();const email=$('loginEmail').value.trim();setAuthStatus('שולחת קישור...');
